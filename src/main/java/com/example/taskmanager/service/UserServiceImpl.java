@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     @Transactional
     public Optional<DecodedJWT> signIn(String login, String password) {
 

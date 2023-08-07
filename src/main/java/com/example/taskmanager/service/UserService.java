@@ -14,4 +14,6 @@ public interface UserService {
 
     Optional<DecodedJWT> signIn(String login, String password);
 
+    Optional<User> findByUsername(String username);
+
 }

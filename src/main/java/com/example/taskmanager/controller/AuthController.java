@@ -9,6 +9,7 @@ import com.example.taskmanager.dto.user.UserDto;
 import com.example.taskmanager.mapper.AuthMapper;
 import com.example.taskmanager.mapper.UserMapper;
 import com.example.taskmanager.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +29,13 @@ public class AuthController {
     private final AuthMapper authMapper;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody UserCreationDto userCreationDto){
+    public ResponseEntity<Void> signUp(@Valid @RequestBody UserCreationDto userCreationDto){
         userService.createUser(userMapper.toEntity(userCreationDto));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<AuthResponse> signIn(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<AuthResponse> signIn(@Valid @RequestBody AuthRequest authRequest){
 
         return ResponseEntity.of(userService.signIn(authRequest.getLogin(), authRequest.getPassword()).map(authMapper::toAuthResponse));
     }

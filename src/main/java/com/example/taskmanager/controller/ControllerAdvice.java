@@ -7,10 +7,14 @@ import com.example.taskmanager.exception.UserAlreadyExistException;
 import com.example.taskmanager.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -30,6 +34,15 @@ public class ControllerAdvice {
     }
 
 
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleNotValidData(MethodArgumentNotValidException exception){
+        Map<String, String> errors = exception.getFieldErrors().stream()
+                .filter(ex -> ex.getDefaultMessage()!= null)
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+        return ResponseEntity.badRequest().body(errors);
+
+    }
 
 
 }
