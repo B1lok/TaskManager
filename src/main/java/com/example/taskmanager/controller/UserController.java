@@ -2,13 +2,14 @@ package com.example.taskmanager.controller;
 
 
 import com.example.taskmanager.dto.user.UserDto;
+import com.example.taskmanager.dto.user.UserUpdateDto;
 import com.example.taskmanager.mapper.UserMapper;
 import com.example.taskmanager.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,6 +28,17 @@ public class UserController {
     @GetMapping("/self")
     public ResponseEntity<UserDto> getSelf(Principal principal){
         return ResponseEntity.of(userService.findByUsername(principal.getName()).map(userMapper::toDto));
+    }
+
+
+    @PatchMapping("/self/update")
+    public ResponseEntity<UserDto> updateSelf(Principal principal,@Valid @RequestBody UserUpdateDto userUpdateDto){
+
+        return ResponseEntity.of(userService.findByUsername(principal.getName())
+                .map(user -> userMapper.userUpdate(userUpdateDto, user))
+                .map(userService::updateUser)
+                .map(userMapper::toDto));
+
     }
 
 

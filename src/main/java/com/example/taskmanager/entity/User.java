@@ -7,9 +7,7 @@ import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -30,11 +28,23 @@ public class User implements UserDetails {
 
     String password;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Goal> goals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EverydayTask> everydayTasks = new ArrayList<>();
+
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+
+    public void createGoal(Goal goal){
+        goals.add(goal);
+        goal.setOwner(this);
     }
 
     @Override
