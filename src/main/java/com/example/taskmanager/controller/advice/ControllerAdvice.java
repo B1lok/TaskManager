@@ -1,4 +1,4 @@
-package com.example.taskmanager.controller;
+package com.example.taskmanager.controller.advice;
 
 
 import com.auth0.jwt.exceptions.JWTDecodeException;

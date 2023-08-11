@@ -47,6 +47,11 @@ public class User implements UserDetails {
         goal.setOwner(this);
     }
 
+    public void createEverydayTask(EverydayTask everydayTask){
+        everydayTasks.add(everydayTask);
+        everydayTask.setUser(this);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();

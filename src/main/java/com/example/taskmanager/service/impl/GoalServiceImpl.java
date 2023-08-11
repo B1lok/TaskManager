@@ -1,10 +1,11 @@
-package com.example.taskmanager.service;
+package com.example.taskmanager.service.impl;
 
 import com.example.taskmanager.dto.goal.GoalUpdateDto;
 import com.example.taskmanager.entity.Goal;
 import com.example.taskmanager.entity.User;
 import com.example.taskmanager.exception.ForbiddenAccessException;
 import com.example.taskmanager.repository.GoalRepository;
+import com.example.taskmanager.service.GoalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GoalServiceImpl implements GoalService{
+public class GoalServiceImpl implements GoalService {
 
 
     private final GoalRepository goalRepository;

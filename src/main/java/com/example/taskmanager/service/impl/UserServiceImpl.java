@@ -1,4 +1,4 @@
-package com.example.taskmanager.service;
+package com.example.taskmanager.service.impl;
 
 
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -9,6 +9,7 @@ import com.example.taskmanager.exception.UserAlreadyExistException;
 import com.example.taskmanager.exception.UserNotFoundException;
 import com.example.taskmanager.repository.UserRepository;
 import com.example.taskmanager.security.JwtService;
+import com.example.taskmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
