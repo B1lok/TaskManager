@@ -1,7 +1,20 @@
 package com.example.taskmanager.exception;
 
-public class UserAlreadyExistException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.ErrorResponseException;
+
+import java.time.Instant;
+
+public class UserAlreadyExistException extends ErrorResponseException {
     public UserAlreadyExistException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST,asProblemDetail(message) , null);
+    }
+
+    private static ProblemDetail asProblemDetail(String message){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, message);
+        problemDetail.setTitle("User already exist");
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
     }
 }
