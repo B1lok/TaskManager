@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +26,17 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
 
     @Scheduled(cron = "0 0 0 * * * ")
     @Transactional
-    public void resettingEverydayTasks(){
-        everydayTaskRepository.deleteAll();
+    public void resettingEverydayTasks() {
+        List<EverydayTask> outDatedTasks = everydayTaskRepository.findAll().stream()
+                .filter(task -> task.getCompleteAt().isBefore(LocalDate.now()))
+                .toList();
+        everydayTaskRepository.deleteAll(outDatedTasks);
     }
 
 
     @Override
-    public List<EverydayTask> getAll(Long id) {
-        return everydayTaskRepository.findAllByUserId(id);
+    public List<EverydayTask> getAllByDate(Long id, LocalDate date) {
+        return everydayTaskRepository.findAllTasksByDate(id, date);
     }
 
     @Override
@@ -42,6 +47,7 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
     }
 
     @Override
+    @Transactional
     public Optional<EverydayTask> findById(Long id) {
         return everydayTaskRepository.findById(id);
     }
@@ -49,7 +55,7 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
     @Override
     @Transactional
     public EverydayTask updateTask(EverydayTask everydayTask, User user, Long taskId) {
-        if (isUserEverydayTaskCreator(user, taskId)){
+        if (isUserEverydayTaskCreator(user, taskId)) {
             return everydayTaskRepository.save(everydayTask);
         } else {
             throw new ForbiddenAccessException("You can not modify this task");
@@ -60,14 +66,14 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
     @Override
     @Transactional
     public void deleteTask(Long id, User user) {
-        if (isUserEverydayTaskCreator(user, id)){
+        if (isUserEverydayTaskCreator(user, id)) {
             everydayTaskRepository.deleteById(id);
         } else {
             throw new ForbiddenAccessException("You can not delete this task");
         }
     }
 
-    private boolean isUserEverydayTaskCreator(User user, Long taskId){
+    private boolean isUserEverydayTaskCreator(User user, Long taskId) {
         return everydayTaskRepository.findById(taskId)
                 .map(task -> task.getUser().equals(user))
                 .orElse(false);

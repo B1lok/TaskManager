@@ -24,7 +24,7 @@ public class EverydayTask {
     private String description;
 
 
-    @Column(name = "createdAt")
-    private LocalDate createdAt = LocalDate.now();
+    @Column(name = "completeAt")
+    private LocalDate completeAt;
 
 }

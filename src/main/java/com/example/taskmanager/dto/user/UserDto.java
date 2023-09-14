@@ -3,8 +3,10 @@ package com.example.taskmanager.dto.user;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class UserDto {
+public class UserDto implements Serializable {
 
     private Long id;
 

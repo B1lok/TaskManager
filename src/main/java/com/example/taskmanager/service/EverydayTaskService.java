@@ -6,6 +6,7 @@ import com.example.taskmanager.entity.EverydayTask;
 import com.example.taskmanager.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface EverydayTaskService {
 
 
-    List<EverydayTask> getAll(Long id);
+    List<EverydayTask> getAllByDate(Long id, LocalDate date);
 
     Optional<EverydayTask> findById(Long id);
 

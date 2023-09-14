@@ -1,4 +1,4 @@
-package com.example.taskmanager.controller.advice;
+package com.example.taskmanager.controller;
 
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.format.DateTimeParseException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ControllerAdvice {
+public class ExceptionTranslator {
 
 
 

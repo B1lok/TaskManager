@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +34,9 @@ public class EverydayTaskController {
 
     private final EverydayTaskMapper everydayTaskMapper;
 
-    @GetMapping("/everydayTasks")
-    public ResponseEntity<List<EverydayTaskDto>> getEverydayTasks(Principal principal){
-        return everydayTaskService.getAll(userService.findByUsername(principal.getName()).get().getId()).stream()
+    @GetMapping("/everydayTasks/{date}")
+    public ResponseEntity<List<EverydayTaskDto>> getEverydayTasks(Principal principal, @PathVariable LocalDate date){
+        return everydayTaskService.getAllByDate(userService.findByUsername(principal.getName()).get().getId(), date).stream()
                 .map(everydayTaskMapper::toDto)
                 .collect(Collectors.collectingAndThen(Collectors.toList(), ResponseEntity::ok));
     }
