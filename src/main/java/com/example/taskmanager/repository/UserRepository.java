@@ -17,6 +17,16 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByUsernameOrEmail(@Param("data") String login);
 
 
+
+    @Query("select u from User u where u.username = :username and u.id != :id")
+    Optional<User> isUsernameInUse(@Param("username") String username, @Param("id") Long id);
+
+
+    @Query("select u from User u where u.email = :email and u.id != :id")
+    Optional<User> isEmailInUse(@Param("email") String email, @Param("id") Long id);
+
+
+
     public Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);

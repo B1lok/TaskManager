@@ -2,7 +2,6 @@ package com.example.taskmanager.service.impl;
 
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.taskmanager.dto.user.UserUpdateDto;
 import com.example.taskmanager.entity.User;
 import com.example.taskmanager.exception.InvalidPasswordException;
 import com.example.taskmanager.exception.UserAlreadyExistException;
@@ -73,13 +72,11 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean isEmailInUse(User user) {
-        return userRepository.findByEmail(user.getEmail())
-                .filter(foundedUser -> !foundedUser.getId().equals(user.getId())).isPresent();
+        return userRepository.isEmailInUse(user.getEmail(), user.getId()).isPresent();
     }
 
 
     private boolean isUsernameInUse(User user) {
-        return userRepository.findByUsername(user.getUsername())
-                .filter(foundedUser -> !foundedUser.getId().equals(user.getId())).isPresent();
+        return userRepository.isUsernameInUse(user.getUsername(), user.getId()).isPresent();
     }
 }

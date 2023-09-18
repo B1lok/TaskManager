@@ -19,8 +19,6 @@ import java.security.Principal;
 @RequestMapping("/myTask")
 public class UserController {
 
-
-
     private final UserService userService;
 
     private final UserMapper userMapper;
@@ -29,7 +27,6 @@ public class UserController {
     public ResponseEntity<UserDto> getSelf(Principal principal){
         return ResponseEntity.of(userService.findByUsername(principal.getName()).map(userMapper::toDto));
     }
-
 
     @PatchMapping("/self/update")
     public ResponseEntity<UserDto> updateSelf(Principal principal,@Valid @RequestBody UserUpdateDto userUpdateDto){
@@ -40,13 +37,4 @@ public class UserController {
                 .map(userMapper::toDto));
 
     }
-
-
-
-
-
-
-
-
-
 }
