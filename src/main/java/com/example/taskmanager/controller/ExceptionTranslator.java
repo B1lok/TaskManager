@@ -2,6 +2,7 @@ package com.example.taskmanager.controller;
 
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.taskmanager.dto.ExceptionResponse;
 import com.example.taskmanager.exception.ForbiddenAccessException;
 import com.example.taskmanager.exception.InvalidPasswordException;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,7 +32,7 @@ public class ExceptionTranslator {
                 .body(new ExceptionResponse(runtimeException.getMessage()));
     }
 
-    @ExceptionHandler({ForbiddenAccessException.class, JWTDecodeException.class})
+    @ExceptionHandler({JWTVerificationException.class, ForbiddenAccessException.class})
     public ResponseEntity<ExceptionResponse> handleForbiddenRequest(RuntimeException runtimeException){
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ExceptionResponse(runtimeException.getMessage()));
@@ -45,10 +48,10 @@ public class ExceptionTranslator {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleNotValidData(MethodArgumentNotValidException exception){
-        Map<String, String> errors = exception.getFieldErrors().stream()
+    public ResponseEntity<Map<String, List<String>>> handleNotValidData(MethodArgumentNotValidException exception){
+        Map<String, List<String>> errors = exception.getFieldErrors().stream()
                 .filter(ex -> ex.getDefaultMessage()!= null)
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+                .collect(Collectors.groupingBy(FieldError::getField, Collectors.mapping(FieldError::getDefaultMessage, Collectors.toList())));
         return ResponseEntity.badRequest().body(errors);
 
     }
