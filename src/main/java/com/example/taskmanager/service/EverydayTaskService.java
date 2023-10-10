@@ -2,6 +2,7 @@ package com.example.taskmanager.service;
 
 
 import com.example.taskmanager.dto.everydayTask.EverydayTaskDto;
+import com.example.taskmanager.dto.everydayTask.EverydayTaskUpdateDto;
 import com.example.taskmanager.entity.EverydayTask;
 import com.example.taskmanager.entity.User;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public interface EverydayTaskService {
 
     EverydayTask createTask(EverydayTask everydayTask, User user);
 
-    EverydayTask updateTask(EverydayTask everydayTask, User user, Long taskId);
+    EverydayTask updateTask(EverydayTask everydayTask, EverydayTaskUpdateDto updateDto, User user, Long taskId);
 
 
 }

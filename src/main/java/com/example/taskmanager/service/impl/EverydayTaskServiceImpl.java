@@ -1,8 +1,10 @@
 package com.example.taskmanager.service.impl;
 
+import com.example.taskmanager.dto.everydayTask.EverydayTaskUpdateDto;
 import com.example.taskmanager.entity.EverydayTask;
 import com.example.taskmanager.entity.User;
 import com.example.taskmanager.exception.ForbiddenAccessException;
+import com.example.taskmanager.mapper.EverydayTaskMapper;
 import com.example.taskmanager.repository.EverydayTaskRepository;
 import com.example.taskmanager.service.EverydayTaskService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
 
 
     private final EverydayTaskRepository everydayTaskRepository;
+
+    private final EverydayTaskMapper everydayTaskMapper;
 
     @Scheduled(cron = "0 0 0 * * * ")
     @Transactional
@@ -54,9 +58,9 @@ public class EverydayTaskServiceImpl implements EverydayTaskService {
 
     @Override
     @Transactional
-    public EverydayTask updateTask(EverydayTask everydayTask, User user, Long taskId) {
+    public EverydayTask updateTask(EverydayTask everydayTask, EverydayTaskUpdateDto updateDto, User user, Long taskId) {
         if (isUserEverydayTaskCreator(user, taskId)) {
-            return everydayTaskRepository.save(everydayTask);
+            return everydayTaskMapper.updateEverydayTask(updateDto, everydayTask);
         } else {
             throw new ForbiddenAccessException("You can not modify this task");
         }

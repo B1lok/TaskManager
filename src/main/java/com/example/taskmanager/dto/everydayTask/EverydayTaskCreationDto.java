@@ -2,10 +2,7 @@ package com.example.taskmanager.dto.everydayTask;
 
 
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,6 +20,7 @@ public class EverydayTaskCreationDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @FutureOrPresent
+    @NotNull
     private LocalDate completeAt;
 
 }
