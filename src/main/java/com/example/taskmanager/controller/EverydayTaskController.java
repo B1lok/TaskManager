@@ -52,8 +52,7 @@ public class EverydayTaskController {
     @PatchMapping("/updateEverydayTask/{id}")
     public ResponseEntity<EverydayTaskDto> updateTask(Principal principal, @PathVariable Long id, @Valid @RequestBody EverydayTaskUpdateDto updateDto){
         return ResponseEntity.of(everydayTaskService.findById(id)
-                .map(task -> everydayTaskMapper.updateEverydayTask(updateDto, task))
-                .map(task -> everydayTaskService.updateTask(task, userService.findByUsername(principal.getName()).get(), id))
+                .map(task -> everydayTaskService.updateTask(task,updateDto,userService.findByUsername(principal.getName()).get(), id))
                 .map(everydayTaskMapper::toDto));
     }
 
