@@ -10,10 +10,8 @@ import java.time.LocalDate;
 @Data
 public class GoalUpdateDto {
 
-    @NotBlank(message = "Specify title")
     private String title;
 
-    @NotBlank(message = "Specify description")
     private String description;
 
 
